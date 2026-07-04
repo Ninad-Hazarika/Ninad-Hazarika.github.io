@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ninad Hazarika — TU ECE '29</title>
+<meta name="description" content="Ninad Hazarika — Electronics & Communication Engineering student at Tezpur University. IoT, embedded systems, and AI builds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A1F1C;
+    --bg-alt:#0E2621;
+    --surface:#12332C;
+    --surface-2:#173C33;
+    --border:rgba(237,234,224,0.14);
+    --border-strong:rgba(237,234,224,0.26);
+    --text:#EDEAE0;
+    --text-dim:rgba(237,234,224,0.64);
+    --text-faint:rgba(237,234,224,0.38);
+    --copper:#C97A3D;
+    --copper-bright:#E39A5E;
+    --phosphor:#6EE7B7;
+    --phosphor-bright:#96FFD6;
+    --radius:3px;
+    --mono:'Space Mono', monospace;
+    --mono2:'IBM Plex Mono', monospace;
+    --sans:'IBM Plex Sans', sans-serif;
+    --rail-x: 44px;
+    color-scheme: dark;
+  }
+  html[data-theme="light"]{
+    --bg:#EDEFE6;
+    --bg-alt:#E5E7DA;
+    --surface:#FBFBF5;
+    --surface-2:#F2F2E8;
+    --border:rgba(16,31,26,0.14);
+    --border-strong:rgba(16,31,26,0.28);
+    --text:#122019;
+    --text-dim:rgba(18,32,25,0.66);
+    --text-faint:rgba(18,32,25,0.42);
+    --copper:#A85C2E;
+    --copper-bright:#8A4B24;
+    --phosphor:#1F8F6B;
+    --phosphor-bright:#136B4F;
+    color-scheme: light;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    transition:background .35s ease, color .35s ease;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--copper); color:#0A1F1C; }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* faint PCB dot-grid texture */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image: radial-gradient(var(--border) 1px, transparent 1px);
+    background-size: 26px 26px;
+    opacity:.35;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{ max-width:920px; margin:0 auto; padding:0 28px; position:relative; }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(10px);
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    max-width:920px; margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-weight:700; font-size:15px; letter-spacing:.02em;
+  }
+  .logo-chip{
+    width:30px; height:30px; border:1.5px solid var(--copper); border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:10px; color:var(--copper-bright);
+    position:relative; flex-shrink:0;
+  }
+  .logo-chip::before, .logo-chip::after{
+    content:""; position:absolute; background:var(--copper); width:6px; height:1.5px;
+  }
+  .logo-chip::before{ left:-6px; top:8px; box-shadow: 0 12px 0 var(--copper); }
+  .logo-chip::after{ right:-6px; top:8px; box-shadow: 0 12px 0 var(--copper); }
+
+  nav ul{ list-style:none; display:flex; gap:26px; }
+  nav a{
+    font-family:var(--mono2); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-dim); transition:color .2s ease;
+  }
+  nav a:hover{ color:var(--phosphor); }
+  .nav-links{ display:flex; align-items:center; gap:26px; }
+  .nav-tools{ display:flex; align-items:center; gap:12px; }
+
+  .cmdk-btn{
+    display:flex; align-items:center; gap:8px;
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:6px 10px; color:var(--text-dim); font-family:var(--mono2); font-size:11px;
+  }
+  .cmdk-btn kbd{
+    font-family:var(--mono2); background:var(--surface-2); border:1px solid var(--border-strong);
+    border-radius:2px; padding:1px 5px; font-size:10px;
+  }
+  .cmdk-btn:hover{ border-color:var(--copper); color:var(--text); }
+
+  .switch{
+    width:44px; height:22px; border-radius:3px; background:var(--surface);
+    border:1px solid var(--border-strong); position:relative; padding:2px;
+  }
+  .switch-thumb{
+    width:18px; height:16px; border-radius:2px; background:var(--copper);
+    transition:transform .25s ease; box-shadow: 0 0 8px color-mix(in srgb, var(--copper) 60%, transparent);
+    position:relative; display:flex; align-items:center; justify-content:center;
+  }
+  .switch-thumb svg{ position:absolute; color:#0A1310; transition:opacity .3s ease, transform .35s ease; }
+  .switch-thumb .icon-moon{ opacity:1; transform:rotate(0deg) scale(1); }
+  .switch-thumb .icon-sun{ opacity:0; transform:rotate(90deg) scale(.4); }
+  html[data-theme="light"] .switch-thumb .icon-moon{ opacity:0; transform:rotate(-90deg) scale(.4); }
+  html[data-theme="light"] .switch-thumb .icon-sun{ opacity:1; transform:rotate(0deg) scale(1); }
+  html[data-theme="light"] .switch-thumb{ transform:translateX(20px); }
+
+  .burger{ display:none; }
+
+  /* ---------- BOARD / RAIL ---------- */
+  .board{ position:relative; }
+  .board::before{
+    content:"";
+    position:absolute; top:0; bottom:0; left:var(--rail-x);
+    width:1px;
+    background: repeating-linear-gradient(to bottom, var(--border-strong) 0 6px, transparent 6px 12px);
+  }
+  .signal-pulse{
+    position:absolute; left:calc(var(--rail-x) - 3px); width:7px; height:7px; border-radius:50%;
+    background:var(--phosphor-bright);
+    box-shadow: 0 0 10px 2px var(--phosphor-bright);
+    animation: travel 7s linear infinite;
+  }
+  @keyframes travel{
+    0%{ top:0; opacity:0; }
+    5%{ opacity:1; }
+    95%{ opacity:1; }
+    100%{ top:100%; opacity:0; }
+  }
+
+  section{ padding:96px 28px 0; position:relative; }
+  .ref{
+    position:absolute; left:0; top:96px;
+    width:calc(var(--rail-x) + 34px);
+    display:flex; align-items:center; gap:0;
+  }
+  .ref .via{
+    width:9px; height:9px; border-radius:50%; background:var(--bg);
+    border:2px solid var(--copper); flex-shrink:0; position:relative; left:calc(var(--rail-x) - 4px);
+  }
+  .ref .tag{
+    font-family:var(--mono); font-size:11px; color:var(--copper-bright);
+    letter-spacing:.06em; position:relative; left:calc(var(--rail-x) + 6px); white-space:nowrap;
+  }
+  .section-inner{ max-width:864px; margin:0 auto; padding-left:64px; }
+
+  h1,h2,h3{ font-family:var(--mono); font-weight:700; }
+  .eyebrow{
+    font-family:var(--mono2); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--phosphor); margin-bottom:14px; display:block;
+  }
+  h2{ font-size:clamp(24px,3.6vw,32px); margin-bottom:28px; letter-spacing:-.01em; }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding-top:88px; }
+  .status-chip{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono2); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--phosphor); border:1px solid var(--border-strong); border-radius:20px;
+    padding:5px 12px 5px 10px; margin-bottom:28px;
+  }
+  .status-dot{ width:7px; height:7px; border-radius:50%; background:var(--phosphor-bright); box-shadow:0 0 6px var(--phosphor-bright); animation:blink 2s ease-in-out infinite; }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+
+  .hero h1{
+    font-size:clamp(38px,7vw,64px); line-height:1.02; letter-spacing:-.02em; margin-bottom:16px;
+  }
+  .hero h1 span{ color:var(--copper-bright); }
+  .hero-role{ font-family:var(--mono2); font-size:clamp(15px,2vw,18px); color:var(--text-dim); margin-bottom:22px; }
+  .cursor{ display:inline-block; width:9px; height:1.1em; background:var(--phosphor); margin-left:2px; vertical-align:text-bottom; animation:blink 1.1s step-end infinite; }
+  .hero p.lede{ max-width:560px; color:var(--text-dim); font-size:17px; margin-bottom:34px; }
+
+  .btn-row{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:44px; }
+  .btn{
+    font-family:var(--mono2); font-size:13px; letter-spacing:.03em;
+    padding:12px 20px; border-radius:var(--radius); border:1px solid var(--border-strong);
+    display:inline-flex; align-items:center; gap:8px; transition:all .2s ease;
+  }
+  .btn-primary{ background:var(--copper); border-color:var(--copper); color:#0A1310; font-weight:600; }
+  .btn-primary:hover{ background:var(--copper-bright); transform:translateY(-1px); }
+  .btn-ghost{ color:var(--text); }
+  .btn-ghost:hover{ border-color:var(--phosphor); color:var(--phosphor); }
+
+  .readout{
+    display:flex; flex-wrap:wrap; gap:0; border:1px solid var(--border); border-radius:var(--radius);
+    overflow:hidden; margin-bottom:8px;
+  }
+  .readout div{
+    padding:14px 20px; border-right:1px solid var(--border); flex:1; min-width:130px;
+  }
+  .readout div:last-child{ border-right:none; }
+  .readout .k{ font-family:var(--mono2); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint); margin-bottom:4px; }
+  .readout .v{ font-family:var(--mono); font-size:15px; color:var(--phosphor); }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{ display:grid; grid-template-columns:1fr; gap:28px; }
+  .about p{ color:var(--text-dim); font-size:16px; max-width:680px; margin-bottom:16px; }
+  .lang-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
+  .pill{
+    font-family:var(--mono2); font-size:12px; padding:6px 12px; border:1px solid var(--border-strong);
+    border-radius:20px; color:var(--text-dim);
+  }
+  .pill b{ color:var(--phosphor); font-weight:600; }
+
+  /* ---------- STACK ---------- */
+  .stack-group{ margin-bottom:30px; }
+  .stack-group h3{
+    font-family:var(--mono2); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--copper-bright); margin-bottom:14px; font-weight:600;
+  }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    font-family:var(--mono2); font-size:13px; padding:8px 14px; background:var(--surface);
+    border:1px solid var(--border); border-radius:var(--radius); color:var(--text);
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .chip:hover{ border-color:var(--phosphor); transform:translateY(-2px); }
+
+  /* ---------- PROJECTS ---------- */
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:6px;
+    padding:28px; margin-bottom:22px;
+  }
+  .card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:6px; flex-wrap:wrap; }
+  .card h3{ font-size:19px; }
+  .card .when{ font-family:var(--mono2); font-size:11px; color:var(--text-faint); white-space:nowrap; padding-top:4px; }
+  .card .context{ font-family:var(--mono2); font-size:12px; color:var(--phosphor); margin-bottom:14px; }
+  .card p{ color:var(--text-dim); font-size:15px; margin-bottom:16px; }
+  .card ul{ list-style:none; margin-bottom:16px; }
+  .card li{ font-size:14px; color:var(--text-dim); padding-left:16px; position:relative; margin-bottom:7px; }
+  .card li::before{ content:"▸"; position:absolute; left:0; color:var(--copper); }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .tag{ font-family:var(--mono2); font-size:11px; padding:4px 9px; background:var(--surface-2); border-radius:2px; color:var(--text-dim); }
+  .card-link{ font-family:var(--mono2); font-size:12px; color:var(--phosphor); display:inline-flex; gap:6px; align-items:center; }
+  .card-link:hover{ color:var(--phosphor-bright); }
+
+  /* ---------- CERTS ---------- */
+  .cert-list{ display:flex; flex-direction:column; gap:0; border-top:1px solid var(--border); }
+  .cert{
+    display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+    padding:16px 0; border-bottom:1px solid var(--border); flex-wrap:wrap;
+  }
+  .cert-name{ font-size:15px; font-weight:500; }
+  .cert-by{ font-family:var(--mono2); font-size:12px; color:var(--text-faint); }
+  .cert-date{ font-family:var(--mono2); font-size:11px; color:var(--text-faint); white-space:nowrap; }
+  .cert a{ color:var(--phosphor); }
+
+  /* ---------- EDUCATION ---------- */
+  .edu-item{ padding:0 0 26px 0; border-left:2px solid var(--border); padding-left:22px; margin-left:2px; position:relative; }
+  .edu-item::before{ content:""; position:absolute; left:-7px; top:4px; width:12px; height:12px; border-radius:50%; background:var(--bg); border:2px solid var(--phosphor); }
+  .edu-item h3{ font-size:16px; margin-bottom:4px; }
+  .edu-meta{ font-family:var(--mono2); font-size:12px; color:var(--text-faint); margin-bottom:6px; }
+  .edu-note{ font-size:14px; color:var(--text-dim); }
+
+  /* ---------- ACTIVITY ---------- */
+  .gh-summary{ font-family:var(--mono2); font-size:13px; color:var(--text-dim); margin-bottom:16px; }
+  .gh-grid{ display:grid; grid-auto-flow:column; grid-template-rows:repeat(7,10px); gap:3px; overflow-x:auto; padding-bottom:8px; }
+  .gh-cell{ width:10px; height:10px; border-radius:2px; background:var(--surface-2); }
+  .gh-fallback{ font-family:var(--mono2); font-size:13px; color:var(--text-faint); }
+
+  /* ---------- CONNECT ---------- */
+  .connect-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+  .connect-card{
+    border:1px solid var(--border); border-radius:6px; padding:20px; background:var(--surface);
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .connect-card:hover{ border-color:var(--copper); transform:translateY(-2px); }
+  .connect-card .k{ font-family:var(--mono2); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint); margin-bottom:8px; }
+  .connect-card .v{ font-family:var(--mono); font-size:15px; color:var(--text); word-break:break-word; }
+
+  footer{
+    margin-top:110px; border-top:1px solid var(--border); padding:36px 28px 80px;
+    text-align:center;
+  }
+  footer .quote{ font-family:var(--mono); font-size:13px; color:var(--text-faint); max-width:480px; margin:0 auto 14px; }
+  footer .fine{ font-family:var(--mono2); font-size:11px; color:var(--text-faint); }
+
+  /* ---------- CMDK ---------- */
+  .cmdk-overlay{
+    position:fixed; inset:0; background:rgba(6,14,12,.72); backdrop-filter:blur(3px);
+    display:none; align-items:flex-start; justify-content:center; padding-top:14vh; z-index:200;
+  }
+  .cmdk-overlay.open{ display:flex; }
+  .cmdk-box{
+    width:min(560px, 90vw); background:var(--surface); border:1px solid var(--border-strong);
+    border-radius:8px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.5);
+  }
+  .cmdk-input{
+    width:100%; padding:16px 18px; background:transparent; border:none; border-bottom:1px solid var(--border);
+    color:var(--text); font-family:var(--mono2); font-size:14px; outline:none;
+  }
+  .cmdk-list{ max-height:320px; overflow-y:auto; padding:8px; }
+  .cmdk-item{
+    padding:11px 12px; border-radius:4px; font-family:var(--mono2); font-size:13px;
+    display:flex; justify-content:space-between; color:var(--text-dim); cursor:pointer;
+  }
+  .cmdk-item.active{ background:var(--surface-2); color:var(--text); }
+  .cmdk-item .grp{ font-size:10px; color:var(--text-faint); letter-spacing:.08em; }
+  .cmdk-empty{ padding:20px; font-family:var(--mono2); font-size:13px; color:var(--text-faint); text-align:center; }
+
+  /* ---------- REPO FEED ---------- */
+  .repo-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .repo-card{
+    display:block; border:1px solid var(--border); border-radius:6px; padding:18px;
+    background:var(--surface); transition:border-color .2s ease, transform .2s ease;
+  }
+  .repo-card:hover{ border-color:var(--phosphor); transform:translateY(-2px); }
+  .repo-name{ font-family:var(--mono); font-size:14px; margin-bottom:6px; color:var(--text); }
+  .repo-desc{ font-size:13px; color:var(--text-dim); margin-bottom:12px; min-height:34px; }
+  .repo-meta{ display:flex; gap:14px; font-family:var(--mono2); font-size:11px; color:var(--text-faint); align-items:center; }
+  .repo-meta .lang-dot{ width:8px; height:8px; border-radius:50%; background:var(--phosphor); display:inline-block; margin-right:5px; }
+
+
+  /* ---------- CONTACT FORM ---------- */
+  .contact-form{ max-width:640px; }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+  .form-field{ display:flex; flex-direction:column; gap:6px; margin-bottom:14px; }
+  .form-field label{ font-family:var(--mono2); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint); }
+  .form-field input, .form-field textarea{
+    background:var(--surface); border:1px solid var(--border-strong); border-radius:var(--radius);
+    padding:10px 12px; color:var(--text); font-family:var(--sans); font-size:14px; outline:none; resize:vertical;
+  }
+  .form-field input:focus, .form-field textarea:focus{ border-color:var(--phosphor); }
+  .cf-status{ font-family:var(--mono2); font-size:12px; margin-top:12px; min-height:16px; }
+  .cf-status.ok{ color:var(--phosphor); }
+  .cf-status.err{ color:var(--copper-bright); }
+
+  /* ---------- FLOATING NOTES CREATURE ---------- */
+  #critter{
+    position:fixed; right:22px; bottom:22px; z-index:150;
+    width:52px; height:52px; touch-action:none; cursor:grab;
+    animation: bob 3.4s ease-in-out infinite;
+    filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
+  }
+  #critter:hover{ transform:translateY(-4px) scale(1.06); }
+  #critter.dragging{ animation:none !important; transition:none !important; cursor:grabbing; filter: drop-shadow(0 12px 20px rgba(0,0,0,.5)); }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0) rotate(-1.5deg); }
+    50%{ transform:translateY(-9px) rotate(1.5deg); }
+  }
+  #critter .eye{ animation: eyeblink 4.5s ease-in-out infinite; transform-origin:center; }
+  @keyframes eyeblink{ 0%,92%,100%{ transform:scaleY(1);} 95%{ transform:scaleY(.15);} }
+
+  #critterBadge{
+    position:absolute; top:-6px; right:-4px; width:16px; height:16px; border-radius:50%;
+    background:var(--copper); color:#0A1310; font-family:var(--mono2); font-size:9px; font-weight:700;
+    display:none; align-items:center; justify-content:center; border:2px solid var(--bg);
+  }
+
+  #notesPanel{
+    position:fixed; right:22px; bottom:86px; z-index:151;
+    width:min(340px, 78vw); max-height:52vh; overflow-y:auto;
+    background:var(--surface); border:1px solid var(--border-strong); border-radius:8px;
+    box-shadow:0 20px 50px rgba(0,0,0,.45);
+    padding:16px;
+    opacity:0; transform:translateY(10px) scale(.97); pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  #notesPanel.open{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+  #notesPanel .panel-head{
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;
+    font-family:var(--mono2); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--copper-bright);
+  }
+  #notesPanel .panel-close{ font-family:var(--mono2); color:var(--text-faint); font-size:14px; background:none; border:none; }
+  #notesPanel .panel-close:hover{ color:var(--text); }
+  .note-card{ border-left:2px solid var(--border); padding:2px 0 16px 16px; margin-bottom:2px; position:relative; }
+  .note-card::before{ content:""; position:absolute; left:-6px; top:6px; width:10px; height:10px; border-radius:50%; background:var(--bg); border:2px solid var(--copper); }
+  .note-date{ font-family:var(--mono2); font-size:10px; color:var(--text-faint); margin-bottom:3px; }
+  .note-title{ font-size:14px; font-weight:600; margin-bottom:4px; }
+  .note-body{ font-size:13px; color:var(--text-dim); line-height:1.5; }
+  .notes-empty{ font-family:var(--mono2); font-size:12px; color:var(--text-faint); }
+
+  @media (max-width:820px){
+    #critter{ width:44px; height:44px; right:16px; bottom:16px; }
+    #notesPanel{ right:16px; bottom:70px; }
+  }
+
+  /* ---------- CUSTOM CURSOR ---------- */
+  .cursor-on, .cursor-on *{ cursor:none !important; }
+  #cxRing, #cxDot{
+    position:fixed; top:0; left:0; z-index:999; pointer-events:none;
+    border-radius:50%; will-change:transform; opacity:0;
+  }
+  #cxRing{
+    width:28px; height:28px; margin:-14px 0 0 -14px;
+    border:1.5px solid var(--copper-bright);
+    transition:width .18s ease, height .18s ease, margin .18s ease, border-color .18s ease, opacity .2s ease;
+  }
+  #cxRing::before, #cxRing::after{
+    content:""; position:absolute; background:var(--copper-bright);
+  }
+  #cxRing::before{ width:6px; height:1px; top:50%; left:-10px; }
+  #cxRing::after{ width:1px; height:6px; left:50%; top:-10px; }
+  #cxDot{
+    width:5px; height:5px; margin:-2.5px 0 0 -2.5px;
+    background:var(--phosphor-bright); box-shadow:0 0 8px 1px var(--phosphor-bright);
+    transition:opacity .2s ease, background .18s ease, box-shadow .18s ease;
+  }
+  .cursor-on #cxRing, .cursor-on #cxDot{ opacity:1; }
+  #cxRing.active{ width:44px; height:44px; margin:-22px 0 0 -22px; border-color:var(--phosphor-bright); }
+  #cxRing.active::before, #cxRing.active::after{ display:none; }
+
+  /* ---------- BOOT SEQUENCE ---------- */
+  #bootOverlay{
+    position:fixed; inset:0; z-index:500; background:#060E0C;
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity .5s ease;
+  }
+  #bootOverlay.hide{ opacity:0; pointer-events:none; }
+  #bootLines{
+    font-family:var(--mono2); font-size:13px; color:#6EE7B7; line-height:1.9;
+    text-shadow:0 0 6px rgba(110,231,183,.5);
+  }
+  #bootLines div{ opacity:0; animation: bootline .35s ease forwards; }
+  #bootLines .ok{ color:var(--copper-bright); }
+  @keyframes bootline{ from{ opacity:0; transform:translateX(-4px); } to{ opacity:1; transform:translateX(0); } }
+
+  /* ---------- SCANLINES ---------- */
+  #scanlines{
+    position:fixed; inset:0; z-index:998; pointer-events:none;
+    background:repeating-linear-gradient(to bottom, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:overlay; opacity:.5;
+  }
+
+  /* ---------- TECHY CORNERS ---------- */
+  .techy-corners{ position:relative; }
+  .techy-corners::before, .techy-corners::after{
+    content:""; position:absolute; width:14px; height:14px; opacity:0;
+    transition:opacity .2s ease; pointer-events:none;
+  }
+  .techy-corners::before{ top:-1px; left:-1px; border-top:2px solid var(--phosphor-bright); border-left:2px solid var(--phosphor-bright); }
+  .techy-corners::after{ bottom:-1px; right:-1px; border-bottom:2px solid var(--phosphor-bright); border-right:2px solid var(--phosphor-bright); }
+  .techy-corners:hover::before, .techy-corners:hover::after{ opacity:1; }
+
+  /* ---------- HEX ADDRESS TAGS ---------- */
+  .ref .hex{
+    font-family:var(--mono2); font-size:9px; color:var(--text-faint);
+    position:relative; left:calc(var(--rail-x) + 6px); margin-left:8px; letter-spacing:.04em;
+  }
+
+  /* ---------- STATUS FOOTER BAR ---------- */
+  .status-bar{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:22px;
+    font-family:var(--mono2); font-size:11px; color:var(--text-faint);
+    letter-spacing:.06em; margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid var(--border);
+  }
+  .status-bar span{ display:inline-flex; align-items:center; gap:6px; }
+  .status-bar .dot{ width:6px; height:6px; border-radius:50%; background:var(--phosphor-bright); box-shadow:0 0 6px var(--phosphor-bright); animation:blink 2s ease-in-out infinite; }
+
+  @media (max-width:820px){
+    .repo-grid{ grid-template-columns:1fr; }
+    .form-row{ grid-template-columns:1fr; }
+    :root{ --rail-x:20px; }
+    .board::before{ display:none; }
+    .signal-pulse{ display:none; }
+    .ref{ position:static; margin-bottom:10px; width:auto; }
+    .ref .via{ left:0; }
+    .ref .tag{ left:8px; }
+    .ref .hex{ left:8px; }
+    .section-inner{ padding-left:0; }
+    .nav-links{ display:none; }
+    .connect-grid{ grid-template-columns:1fr; }
+    section{ padding:64px 18px 0; }
+    .readout div{ min-width:100px; }
+    #scanlines{ display:none; }
+  }
+</style>
+</head>
+<body>
+<div id="bootOverlay">
+  <div id="bootLines"></div>
+</div>
+<div id="scanlines"></div>
+
+
+<header>
+  <div class="nav-inner">
+    <div class="logo">
+      <span class="logo-chip">NH</span>
+      <span>N.HAZARIKA</span>
+    </div>
+    <div class="nav-links">
+      <nav><ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#builds">Builds</a></li>
+        <li><a href="#education">Edu</a></li>
+        <li><a href="resume.pdf" target="_blank" rel="noopener">Resume ↗</a></li>
+        <li><a href="#connect">Connect</a></li>
+      </ul></nav>
+    </div>
+    <div class="nav-tools">
+      <button class="cmdk-btn" id="cmdkOpen" aria-label="Open command palette">Jump to <kbd id="cmdkKeyHint">Ctrl K</kbd></button>
+      <button class="switch" id="themeToggle" aria-label="Toggle theme">
+        <span class="switch-thumb">
+          <svg class="icon-moon" viewBox="0 0 16 16" width="10" height="10"><path d="M8 1.6a6.4 6.4 0 1 0 6.4 8.2A5.4 5.4 0 0 1 8 1.6z" fill="currentColor"/></svg>
+          <svg class="icon-sun" viewBox="0 0 16 16" width="10" height="10">
+            <circle cx="8" cy="8" r="3" fill="currentColor"/>
+            <g stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+              <line x1="8" y1="0.5" x2="8" y2="2.3"/><line x1="8" y1="13.7" x2="8" y2="15.5"/>
+              <line x1="0.5" y1="8" x2="2.3" y2="8"/><line x1="13.7" y1="8" x2="15.5" y2="8"/>
+              <line x1="2.6" y1="2.6" x2="3.9" y2="3.9"/><line x1="12.1" y1="12.1" x2="13.4" y2="13.4"/>
+              <line x1="2.6" y1="13.4" x2="3.9" y2="12.1"/><line x1="12.1" y1="3.9" x2="13.4" y2="2.6"/>
+            </g>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="board">
+  <div class="signal-pulse"></div>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="section-inner" style="padding-left:0;">
+      <div class="status-chip"><span class="status-dot"></span>BUILDING — FIRST YEAR</div>
+      <h1>Ninad<br><span>Hazarika</span></h1>
+      <div class="hero-role">B.Tech · Electronics &amp; Communication Engineering · Tezpur University '29<span class="cursor"></span></div>
+      <p class="lede">Somewhere between a breadboard and a pull request. Wires sensors into an ESP32 by day, ships React front-ends and hackathon builds by night — based in Guwahati, Assam.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://github.com/Ninad-Hazarika" target="_blank" rel="noopener">View GitHub ↗</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/ninad-hazarika-14a27937a" target="_blank" rel="noopener">Connect on LinkedIn ↗</a>
+        <a class="btn btn-ghost" href="resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+      </div>
+      <div class="readout">
+        <div><div class="k">Location</div><div class="v">Guwahati, IN</div></div>
+        <div><div class="k">Focus</div><div class="v">IoT · Embedded</div></div>
+        <div><div class="k">Network</div><div class="v">344 followers</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="ref"><span class="via"></span><span class="tag">U1 · PROFILE</span><span class="hex">0x0100</span></div>
+    <div class="section-inner">
+      <span class="eyebrow">About</span>
+      <h2>Currently calibrating.</h2>
+      <div class="about-grid">
+        <div class="about">
+          <p>First-year ECE student at Tezpur University, still early enough in the degree that most of the learning happens outside the syllabus — soldering sensors onto a plant-monitoring rig, entering hackathons on a whim, and picking up whatever tool a project demands next, from EasyEDA schematics to Gemini API calls.</p>
+          <p>Volunteers with the National Service Scheme since joining Tezpur University in 2025. Grew up moving between Sivasagar and Guwahati, Assam.</p>
+          <div class="lang-row">
+            <span class="pill"><b>Assamese</b> · native</span>
+            <span class="pill"><b>Hindi</b> · native</span>
+            <span class="pill"><b>English</b> · professional</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack">
+    <div class="ref"><span class="via"></span><span class="tag">U2 · COMPONENTS</span><span class="hex">0x0140</span></div>
+    <div class="section-inner">
+      <span class="eyebrow">Stack</span>
+      <h2>Parts on the bench.</h2>
+
+      <div class="stack-group">
+        <h3>Embedded &amp; Hardware</h3>
+        <div class="chip-row">
+          <span class="chip">ESP32</span><span class="chip">Arduino IDE</span><span class="chip">C++</span>
+          <span class="chip">Sensors &amp; Actuators</span><span class="chip">OLED Displays</span>
+          <span class="chip">EasyEDA</span><span class="chip">Onshape</span>
+        </div>
+      </div>
+
+      <div class="stack-group">
+        <h3>Software &amp; AI</h3>
+        <div class="chip-row">
+          <span class="chip">React.js</span><span class="chip">Tailwind CSS</span>
+          <span class="chip">Google Gemini API</span><span class="chip">Google Cloud Platform</span>
+          <span class="chip">HTML/CSS</span>
+        </div>
+      </div>
+
+      <div class="stack-group">
+        <h3>Tools &amp; Platforms</h3>
+        <div class="chip-row">
+          <span class="chip">MATLAB</span><span class="chip">Simulink</span>
+          <span class="chip">Git &amp; GitHub</span><span class="chip">Telegram Bot API</span>
+          <span class="chip">Vercel</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUILDS -->
+  <section id="builds">
+    <div class="ref"><span class="via"></span><span class="tag">U3 · BUILDS</span><span class="hex">0x0180</span></div>
+    <div class="section-inner">
+      <span class="eyebrow">Builds</span>
+      <h2>What's been on the breadboard.</h2>
+
+      <div class="card techy-corners">
+        <div class="card-head">
+          <h3>Smart Plant Monitoring &amp; Automated Irrigation System</h3>
+          <span class="when">Apr – Jun 2026</span>
+        </div>
+        <div class="context">Tezpur University coursework build</div>
+        <p>An ESP32-based IoT rig that waters and watches a plant so you don't have to. Soil moisture, temperature/humidity, water level, IR, and touch sensors feed a relay-controlled pump and an animated OLED status readout.</p>
+        <ul>
+          <li>Automated irrigation triggered by live soil-moisture thresholds</li>
+          <li>Wi-Fi dashboard for remote monitoring and manual pump override</li>
+          <li>Telegram alerts for low water, prolonged dryness, and motion detected</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">ESP32</span><span class="tag">C++</span><span class="tag">IoT</span>
+          <span class="tag">Telegram Bot API</span><span class="tag">OLED</span>
+        </div>
+      </div>
+
+      <div class="card techy-corners">
+        <div class="card-head">
+          <h3>PurePlate AI</h3>
+          <span class="when">Feb 2026</span>
+        </div>
+        <div class="context">Built at Neural X AI Hackathon — IEEE Tezpur University Student Branch</div>
+        <p>A mobile-first web app that reads a food label and tells you what it actually means. Gemini 2.5 Flash parses ingredient lists against a user's BMI and allergy profile, scores safety 0–100, and suggests healthier swaps — all history kept local, no extra API spend.</p>
+        <div class="tag-row">
+          <span class="tag">React.js</span><span class="tag">Tailwind CSS</span><span class="tag">Gemini API</span><span class="tag">Vercel</span>
+        </div>
+        <a class="card-link" href="https://github.com/LogicLoops-2500X/PurePlate-AI" target="_blank" rel="noopener">View repo ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTS -->
+  <section id="certs">
+    <div class="ref"><span class="via"></span><span class="tag">U4 · CERTS</span><span class="hex">0x01C0</span></div>
+    <div class="section-inner">
+      <span class="eyebrow">Certifications &amp; Honors</span>
+      <h2>Paper trail.</h2>
+      <div class="cert-list">
+        <div class="cert">
+          <div><div class="cert-name">Build with AI — Agent Builder Camp</div><div class="cert-by">GeeksforGeeks × Google Cloud</div></div>
+          <div class="cert-date">May 2026</div>
+        </div>
+        <div class="cert">
+          <div><div class="cert-name">MATLAB Certified</div><div class="cert-by">MathWorks</div></div>
+          <div class="cert-date">Mar 2026</div>
+        </div>
+        <div class="cert">
+          <div><div class="cert-name">Neural X Hackathon</div><div class="cert-by">IEEE Tezpur University Student Branch</div></div>
+          <div class="cert-date">Feb 2026</div>
+        </div>
+        <div class="cert">
+          <div><div class="cert-name">Āryabhata Ganit Challenge — Top 100, Guwahati Region</div><div class="cert-by">CBSE</div></div>
+          <div class="cert-date">Feb 2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="ref"><span class="via"></span><span class="tag">U5 · EDUCATION</span><span class="hex">0x0200</span></div>
+    <div class="section-inner">
+      <span class="eyebrow">Education</span>
+      <h2>Track record.</h2>
+
+      <div class="edu-item">
+        <h3>Tezpur University</h3>
+        <div class="edu-meta">B.Tech, Electronics &amp; Communication Engineering — Aug 2025 – Present</div>
+        <div class="edu-note">Class of '29. NSS volunteer since enrolling.</div>
+      </div>
+      <div class="edu-item">
+        <h3>Purna Vikash Central School, Joysagar</h3>
+        <div class="edu-meta">Apr 2023 – May 2025</div>
+        <div class="edu-note">Weighted GPA — 4.06 / 5</div>
+      </div>
+      <div class="edu-item">
+        <h3>Vivekananda Kendra Vidyalaya, Sivasagar</h3>
+        <div class="edu-meta">Jan 2011 – Mar 2023</div>
+        <div class="edu-note">Weighted GPA — 4.8 / 5</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVITY -->
+  <section id="activity">
+    <div class="ref"><span class="via"></span><span class="tag">U6 · ACTIVITY</span><span class="hex">0x0240</span></div>
+    <div class="section-inner">
+      <span class="eyebrow">Activity</span>
+      <h2>Signal from GitHub.</h2>
+      <div class="gh-summary" id="ghSummary">Reading contribution history…</div>
+      <div class="gh-grid" id="ghGrid"></div>
+
+      <h3 style="font-family:var(--mono2); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--copper-bright); margin:36px 0 14px; font-weight:600;">Recent repos</h3>
+      <div id="repoGrid" class="repo-grid">
+        <div class="gh-fallback">Loading repos…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONNECT -->
+  <section id="connect">
+    <div class="ref"><span class="via"></span><span class="tag">U7 · CONNECT</span><span class="hex">0x0280</span></div>
+    <div class="section-inner">
+      <span class="eyebrow">Connect</span>
+      <h2>Ping the board.</h2>
+      <div class="connect-grid">
+        <a class="connect-card techy-corners" href="https://github.com/Ninad-Hazarika" target="_blank" rel="noopener">
+          <div class="k">GitHub</div><div class="v">Ninad-Hazarika ↗</div>
+        </a>
+        <a class="connect-card techy-corners" href="https://www.linkedin.com/in/ninad-hazarika-14a27937a" target="_blank" rel="noopener">
+          <div class="k">LinkedIn</div><div class="v">ninad-hazarika ↗</div>
+        </a>
+        <a class="connect-card techy-corners" href="mailto:ninadhazarika@gmail.com">
+          <div class="k">Email</div><div class="v">ninadhazarika@gmail.com</div>
+        </a>
+        <a class="connect-card techy-corners" href="tel:+919864994660">
+          <div class="k">Phone</div><div class="v">+91 98649 94660</div>
+        </a>
+      </div>
+
+      <h3 style="font-family:var(--mono2); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--copper-bright); margin:34px 0 14px; font-weight:600;">Send a message</h3>
+      <form id="contactForm" class="contact-form">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="name" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-email">Your email</label>
+            <input type="email" id="cf-email" name="email" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="cf-submit">Send message</button>
+        <div id="cf-status" class="cf-status"></div>
+      </form>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="status-bar">
+    <span><span class="dot"></span>SYSTEM: OPERATIONAL</span>
+    <span id="footerClock">LOCAL TIME: --:--:--</span>
+    <span id="footerLastPush">LAST PUSH: —</span>
+  </div>
+  <div class="quote">"Automated irrigation, questionable sleep schedule."</div>
+  <div class="fine">Ninad Hazarika · Guwahati, Assam · Built with a soldering iron and a few too many tabs open</div>
+</footer>
+
+<!-- CMDK -->
+<div class="cmdk-overlay" id="cmdkOverlay">
+  <div class="cmdk-box">
+    <input class="cmdk-input" id="cmdkInput" placeholder="Jump to a section or link…" autocomplete="off">
+    <div class="cmdk-list" id="cmdkList"></div>
+  </div>
+</div>
+
+<!-- FLOATING NOTES CRITTER -->
+<div id="critter" title="Notes" aria-label="Open notes">
+  <svg viewBox="0 0 60 60" width="52" height="52">
+    <ellipse cx="30" cy="36" rx="18" ry="14" fill="var(--surface)" stroke="var(--copper)" stroke-width="2"/>
+    <path d="M14 30 L6 22 M14 34 L4 34 M46 30 L54 22 M46 34 L56 34 M18 44 L12 52 M42 44 L48 52" stroke="var(--copper)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="6" cy="22" r="2" fill="var(--phosphor)"/>
+    <circle cx="4" cy="34" r="2" fill="var(--phosphor)"/>
+    <circle cx="54" cy="22" r="2" fill="var(--phosphor)"/>
+    <circle cx="56" cy="34" r="2" fill="var(--phosphor)"/>
+    <circle cx="12" cy="52" r="2" fill="var(--phosphor)"/>
+    <circle cx="48" cy="52" r="2" fill="var(--phosphor)"/>
+    <rect x="20" y="18" width="20" height="14" rx="3" fill="var(--bg)" stroke="var(--phosphor)" stroke-width="1.5"/>
+    <g class="eye">
+      <circle cx="25.5" cy="25" r="2.6" fill="var(--phosphor-bright)"/>
+      <circle cx="34.5" cy="25" r="2.6" fill="var(--phosphor-bright)"/>
+    </g>
+  </svg>
+  <div id="critterBadge">i</div>
+</div>
+
+<div id="notesPanel">
+  <div class="panel-head">
+    <span>Notes</span>
+    <button class="panel-close" id="notesPanelClose" aria-label="Close notes">✕ close</button>
+  </div>
+  <div id="notesList"></div>
+</div>
+
+<!-- CUSTOM CURSOR -->
+<div id="cxRing"></div>
+<div id="cxDot"></div>
+
+<script>
+  // ---------- Boot sequence ----------
+  (() => {
+    const overlay = document.getElementById('bootOverlay');
+    const linesEl = document.getElementById('bootLines');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion){ overlay.remove(); return; }
+    const seq = [
+      { t: 'INIT board... ', ok: 'OK' },
+      { t: 'Loading component registry... ', ok: 'OK' },
+      { t: 'Linking signal traces... ', ok: 'OK' },
+      { t: 'Powering up display... ', ok: 'READY' },
+    ];
+    seq.forEach((line, i) => {
+      const div = document.createElement('div');
+      div.style.animationDelay = (i * 0.22) + 's';
+      div.innerHTML = line.t + '<span class="ok">[' + line.ok + ']</span>';
+      linesEl.appendChild(div);
+    });
+    const dismiss = () => { overlay.classList.add('hide'); setTimeout(() => overlay.remove(), 550); };
+    setTimeout(dismiss, seq.length * 220 + 350);
+    overlay.addEventListener('click', dismiss);
+  })();
+
+  // ---------- Footer live clock ----------
+  (() => {
+    const clockEl = document.getElementById('footerClock');
+    function tick(){
+      const now = new Date();
+      const t = now.toLocaleTimeString('en-IN', { hour12:false, timeZone:'Asia/Kolkata' });
+      clockEl.textContent = 'LOCAL TIME (IST): ' + t;
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  // ---------- Theme toggle (in-memory only, no storage) ----------
+  const root = document.documentElement;
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+  });
+
+  // Mac vs other hint
+  if(!/Mac|iPhone|iPad/.test(navigator.platform)){
+    document.getElementById('cmdkKeyHint').textContent = 'Ctrl K';
+  } else {
+    document.getElementById('cmdkKeyHint').textContent = '⌘ K';
+  }
+
+  // ---------- Command palette ----------
+  const commands = [
+    { label: 'Home', grp: 'Section', action: () => scrollToId('home') },
+    { label: 'About', grp: 'Section', action: () => scrollToId('about') },
+    { label: 'Stack', grp: 'Section', action: () => scrollToId('stack') },
+    { label: 'Builds', grp: 'Section', action: () => scrollToId('builds') },
+    { label: 'Notes', grp: 'Action', action: () => openNotesPanel() },
+    { label: 'Certifications & Honors', grp: 'Section', action: () => scrollToId('certs') },
+    { label: 'Education', grp: 'Section', action: () => scrollToId('education') },
+    { label: 'GitHub Activity & Repos', grp: 'Section', action: () => scrollToId('activity') },
+    { label: 'Connect', grp: 'Section', action: () => scrollToId('connect') },
+    { label: 'Open GitHub profile', grp: 'Link', action: () => window.open('https://github.com/Ninad-Hazarika','_blank') },
+    { label: 'Open LinkedIn profile', grp: 'Link', action: () => window.open('https://www.linkedin.com/in/ninad-hazarika-14a27937a','_blank') },
+    { label: 'Open PurePlate AI repo', grp: 'Link', action: () => window.open('https://github.com/LogicLoops-2500X/PurePlate-AI','_blank') },
+    { label: 'Open Resume (PDF)', grp: 'Link', action: () => window.open('resume.pdf','_blank') },
+    { label: 'Email Ninad', grp: 'Link', action: () => window.open('mailto:ninadhazarika@gmail.com','_blank') },
+    { label: 'Toggle theme', grp: 'Action', action: () => document.getElementById('themeToggle').click() },
+  ];
+  let activeIdx = 0;
+  const overlay = document.getElementById('cmdkOverlay');
+  const input = document.getElementById('cmdkInput');
+  const list = document.getElementById('cmdkList');
+
+  function scrollToId(id){
+    document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  function renderList(filter=''){
+    const f = filter.toLowerCase();
+    const filtered = commands.filter(c => c.label.toLowerCase().includes(f));
+    list.innerHTML = '';
+    if(filtered.length === 0){
+      list.innerHTML = '<div class="cmdk-empty">No matches.</div>';
+      return;
+    }
+    filtered.forEach((c, i) => {
+      const div = document.createElement('div');
+      div.className = 'cmdk-item' + (i === activeIdx ? ' active' : '');
+      div.innerHTML = `<span>${c.label}</span><span class="grp">${c.grp}</span>`;
+      div.addEventListener('click', () => { c.action(); closeCmdk(); });
+      div.addEventListener('mousemove', () => { activeIdx = i; renderList(input.value); });
+      list.appendChild(div);
+    });
+    list.dataset.filtered = JSON.stringify(filtered.map(c => c.label));
+  }
+  function openCmdk(){
+    overlay.classList.add('open');
+    activeIdx = 0;
+    input.value = '';
+    renderList();
+    setTimeout(() => input.focus(), 30);
+  }
+  function closeCmdk(){ overlay.classList.remove('open'); }
+
+  document.getElementById('cmdkOpen').addEventListener('click', openCmdk);
+  overlay.addEventListener('click', (e) => { if(e.target === overlay) closeCmdk(); });
+  input.addEventListener('input', () => { activeIdx = 0; renderList(input.value); });
+
+  document.addEventListener('keydown', (e) => {
+    const isCmdk = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
+    if(isCmdk){ e.preventDefault(); overlay.classList.contains('open') ? closeCmdk() : openCmdk(); return; }
+    if(!overlay.classList.contains('open')) return;
+    const f = commands.filter(c => c.label.toLowerCase().includes(input.value.toLowerCase()));
+    if(e.key === 'Escape'){ closeCmdk(); }
+    else if(e.key === 'ArrowDown'){ e.preventDefault(); activeIdx = Math.min(activeIdx+1, f.length-1); renderList(input.value); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); activeIdx = Math.max(activeIdx-1, 0); renderList(input.value); }
+    else if(e.key === 'Enter'){ if(f[activeIdx]){ f[activeIdx].action(); closeCmdk(); } }
+  });
+
+  // ---------- Notes ----------
+  // Add new entries to the top of this array as you write them — { date, title, body }
+  const notes = [
+    // { date: 'Jul 2026', title: 'What broke on the plant monitor', body: 'The relay chattered under low voltage until I added a debounce delay...' },
+  ];
+  (() => {
+    const el = document.getElementById('notesList');
+    if(notes.length === 0){
+      el.innerHTML = '<div class="notes-empty">No notes posted yet — first write-up incoming. Check back soon.</div>';
+      return;
+    }
+    el.innerHTML = notes.map(n => `
+      <div class="note-card">
+        <div class="note-date">${n.date}</div>
+        <div class="note-title">${n.title}</div>
+        <div class="note-body">${n.body}</div>
+      </div>
+    `).join('');
+  })();
+
+  // ---------- Live GitHub repo feed ----------
+  (async () => {
+    const grid = document.getElementById('repoGrid');
+    try{
+      const res = await fetch('https://api.github.com/users/Ninad-Hazarika/repos?sort=updated&per_page=6');
+      if(!res.ok) throw new Error('bad response');
+      const repos = await res.json();
+      if(!Array.isArray(repos) || repos.length === 0) throw new Error('no repos');
+      grid.innerHTML = repos.map(r => `
+        <a class="repo-card techy-corners" href="${r.html_url}" target="_blank" rel="noopener">
+          <div class="repo-name">${r.name}</div>
+          <div class="repo-desc">${r.description ? r.description : 'No description yet.'}</div>
+          <div class="repo-meta">
+            ${r.language ? `<span><span class="lang-dot"></span>${r.language}</span>` : ''}
+            <span>★ ${r.stargazers_count}</span>
+            <span>Updated ${new Date(r.pushed_at).toLocaleDateString('en-IN', {month:'short', year:'numeric'})}</span>
+          </div>
+        </a>
+      `).join('');
+
+      const mostRecent = repos.reduce((a,b) => new Date(a.pushed_at) > new Date(b.pushed_at) ? a : b);
+      const daysAgo = Math.floor((Date.now() - new Date(mostRecent.pushed_at)) / 86400000);
+      const pushLabel = daysAgo <= 0 ? 'today' : daysAgo === 1 ? '1 day ago' : daysAgo + ' days ago';
+      document.getElementById('footerLastPush').textContent = 'LAST PUSH: ' + pushLabel;
+    }catch(err){
+      grid.innerHTML = '<div class="gh-fallback">Live repo feed unavailable right now — <a href="https://github.com/Ninad-Hazarika?tab=repositories" target="_blank" rel="noopener" style="color:var(--phosphor)">browse repos on GitHub ↗</a></div>';
+    }
+  })();
+
+  // ---------- Contact form ----------
+  // Wired to Formspree — replace YOUR_FORM_ID below with your own endpoint from https://formspree.io
+  // (sign up free with ninadhazarika@gmail.com, create a form, copy the ID from the endpoint URL)
+  const FORMSPREE_ID = 'xrewryrb';
+  const contactForm = document.getElementById('contactForm');
+  const cfStatus = document.getElementById('cf-status');
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('cf-submit');
+    if(FORMSPREE_ID === 'YOUR_FORM_ID'){
+      cfStatus.textContent = 'Form not activated yet — see setup note in the code (FORMSPREE_ID).';
+      cfStatus.className = 'cf-status err';
+      return;
+    }
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    try{
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(contactForm)
+      });
+      if(res.ok){
+        cfStatus.textContent = 'Message sent — thanks, I\'ll reply by email soon.';
+        cfStatus.className = 'cf-status ok';
+        contactForm.reset();
+      } else {
+        throw new Error('send failed');
+      }
+    }catch(err){
+      cfStatus.textContent = 'Something went wrong — email ninadhazarika@gmail.com directly instead.';
+      cfStatus.className = 'cf-status err';
+    }finally{
+      btn.textContent = 'Send message';
+      btn.disabled = false;
+    }
+  });
+
+  // ---------- Notes panel (floating, draggable critter) ----------
+  const notesPanel = document.getElementById('notesPanel');
+  const critter = document.getElementById('critter');
+
+  function positionPanelNearCritter(){
+    const r = critter.getBoundingClientRect();
+    const panelW = notesPanel.offsetWidth || 340;
+    let left = r.left + r.width/2 - panelW/2;
+    left = Math.max(12, Math.min(left, window.innerWidth - panelW - 12));
+    let bottom = window.innerHeight - r.top + 14;
+    notesPanel.style.left = left + 'px';
+    notesPanel.style.right = 'auto';
+    notesPanel.style.bottom = bottom + 'px';
+  }
+  function openNotesPanel(){ positionPanelNearCritter(); notesPanel.classList.add('open'); }
+  function closeNotesPanel(){ notesPanel.classList.remove('open'); }
+  document.getElementById('notesPanelClose').addEventListener('click', closeNotesPanel);
+  document.addEventListener('click', (e) => {
+    if(notesPanel.classList.contains('open') && !notesPanel.contains(e.target) && !critter.contains(e.target)){
+      closeNotesPanel();
+    }
+  });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeNotesPanel(); });
+  if(notes.length > 0){
+    document.getElementById('critterBadge').style.display = 'flex';
+  }
+
+  // Drag to reposition; a short tap/click (no meaningful movement) toggles the panel instead.
+  (() => {
+    let dragging = false, moved = false, startX = 0, startY = 0, originLeft = 0, originTop = 0;
+    const DRAG_THRESHOLD = 6;
+
+    function toLeftTop(){
+      const r = critter.getBoundingClientRect();
+      critter.style.left = r.left + 'px';
+      critter.style.top = r.top + 'px';
+      critter.style.right = 'auto';
+      critter.style.bottom = 'auto';
+    }
+    function clamp(){
+      const w = critter.offsetWidth, h = critter.offsetHeight;
+      let left = parseFloat(critter.style.left);
+      let top = parseFloat(critter.style.top);
+      left = Math.max(8, Math.min(left, window.innerWidth - w - 8));
+      top = Math.max(8, Math.min(top, window.innerHeight - h - 8));
+      critter.style.left = left + 'px';
+      critter.style.top = top + 'px';
+    }
+    critter.addEventListener('pointerdown', (e) => {
+      dragging = true; moved = false;
+      toLeftTop();
+      startX = e.clientX; startY = e.clientY;
+      originLeft = parseFloat(critter.style.left);
+      originTop = parseFloat(critter.style.top);
+      critter.setPointerCapture(e.pointerId);
+      critter.classList.add('dragging');
+    });
+    critter.addEventListener('pointermove', (e) => {
+      if(!dragging) return;
+      const dx = e.clientX - startX, dy = e.clientY - startY;
+      if(Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) moved = true;
+      critter.style.left = (originLeft + dx) + 'px';
+      critter.style.top = (originTop + dy) + 'px';
+      clamp();
+      if(notesPanel.classList.contains('open')) positionPanelNearCritter();
+    });
+    critter.addEventListener('pointerup', (e) => {
+      dragging = false;
+      critter.classList.remove('dragging');
+      if(!moved){
+        notesPanel.classList.contains('open') ? closeNotesPanel() : openNotesPanel();
+      }
+    });
+    window.addEventListener('resize', () => {
+      if(critter.style.left) clamp();
+    });
+  })();
+
+  // ---------- Custom cursor ----------
+  (() => {
+    const isFine = window.matchMedia('(pointer: fine)').matches;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!isFine || reduceMotion) return;
+    document.documentElement.classList.add('cursor-on');
+    const ring = document.getElementById('cxRing');
+    const dot = document.getElementById('cxDot');
+    let rx = window.innerWidth/2, ry = window.innerHeight/2;
+    let dx = rx, dy = ry;
+    window.addEventListener('mousemove', (e) => {
+      dx = e.clientX; dy = e.clientY;
+      dot.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    function loop(){
+      rx += (dx - rx) * 0.18;
+      ry += (dy - ry) * 0.18;
+      ring.style.transform = `translate(${rx}px, ${ry}px)`;
+      requestAnimationFrame(loop);
+    }
+    loop();
+    const interactive = 'a, button, input, textarea, .chip, .card, .connect-card, .repo-card, #critter';
+    document.addEventListener('mouseover', (e) => {
+      if(e.target.closest(interactive)) ring.classList.add('active');
+    });
+    document.addEventListener('mouseout', (e) => {
+      if(e.target.closest(interactive)) ring.classList.remove('active');
+    });
+  })();
+
+  // ---------- GitHub contribution heatmap ----------
+  (async () => {
+    const grid = document.getElementById('ghGrid');
+    const summary = document.getElementById('ghSummary');
+    try{
+      const res = await fetch('https://github-contributions-api.jogruber.de/v4/Ninad-Hazarika?y=last');
+      if(!res.ok) throw new Error('bad response');
+      const data = await res.json();
+      const days = data.contributions || [];
+      if(days.length === 0) throw new Error('no data');
+      const total = days.reduce((s,d) => s + d.count, 0);
+      summary.textContent = total + ' contributions in the last year, straight from GitHub.';
+      const levelColor = (lvl) => {
+        const colors = ['var(--surface-2)', 'color-mix(in srgb, var(--phosphor) 30%, var(--surface-2))',
+                         'color-mix(in srgb, var(--phosphor) 55%, var(--surface-2))',
+                         'color-mix(in srgb, var(--phosphor) 78%, var(--surface-2))', 'var(--phosphor-bright)'];
+        return colors[lvl] || colors[0];
+      };
+      grid.innerHTML = '';
+      days.forEach(d => {
+        const cell = document.createElement('div');
+        cell.className = 'gh-cell';
+        cell.style.background = levelColor(d.level);
+        cell.title = d.date + ' — ' + d.count + ' contribution' + (d.count === 1 ? '' : 's');
+        grid.appendChild(cell);
+      });
+    }catch(err){
+      summary.innerHTML = '';
+      grid.style.display = 'none';
+      const fb = document.createElement('div');
+      fb.className = 'gh-fallback';
+      fb.innerHTML = 'Live activity feed unavailable right now — <a href="https://github.com/Ninad-Hazarika" target="_blank" rel="noopener" style="color:var(--phosphor)">see it on GitHub ↗</a>';
+      grid.replaceWith(fb);
+    }
+  })();
+</script>
+</body>
+</html>
